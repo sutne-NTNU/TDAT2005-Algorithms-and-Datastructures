@@ -1,0 +1,10 @@
+# Folders
+*.idea/
+*paths/
+
+# Filetypes
+*.txt
+*.iml
+
+# Specific files
+*.DS_Store

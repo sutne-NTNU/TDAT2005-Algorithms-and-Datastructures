@@ -1,1 +1,2 @@
-# TDAT2005-Algorithms-and-Datastructures
+# TDAT2005 - Algorithms and Datastructures
+
