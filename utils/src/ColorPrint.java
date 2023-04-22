@@ -1,4 +1,4 @@
-package utils;
+package src;
 
 public class ColorPrint
 {

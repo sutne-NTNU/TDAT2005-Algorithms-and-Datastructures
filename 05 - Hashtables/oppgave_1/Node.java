@@ -1,4 +1,4 @@
-package øving_5.oppgave_1;
+package oppgave_1;
 
 class Node
 {

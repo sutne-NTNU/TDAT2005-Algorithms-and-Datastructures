@@ -1,3 +1,4 @@
+package src;
 /**
  * Basic Object to store the data for each day
  */

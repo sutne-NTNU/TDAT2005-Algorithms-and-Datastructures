@@ -1,3 +1,6 @@
+import src.Day;
+import src.Stocks;
+
 public class Main
 {
     public static void main(String[] args)

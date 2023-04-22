@@ -1,4 +1,4 @@
-package øving_13;
+package src;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

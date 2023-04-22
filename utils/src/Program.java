@@ -1,4 +1,4 @@
-package utils;
+package src;
 
 import java.io.BufferedReader;
 
@@ -15,8 +15,6 @@ public class Program
             e.printStackTrace();
         }
     }
-
-
 
     public static void close(Object obj)
     {

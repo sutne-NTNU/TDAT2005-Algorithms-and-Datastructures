@@ -1,22 +1,18 @@
-package øving_4.oppgave_3;
+package oppgave_3;
 
 class Node
 {
-	Object innhold;
-	Node venstre;
-	Node høyre;
+    Object innhold;
+    Node venstre;
+    Node høyre;
 
+    Node(Object innhold)
+    {
+        this.innhold = innhold;
+    }
 
-
-	Node(Object innhold)
-	{
-		this.innhold = innhold;
-	}
-
-
-
-	boolean isLøvNode( )
-	{
-		return this != null && this.venstre == null && this.høyre == null;
-	}
+    boolean isLøvNode()
+    {
+        return this != null && this.venstre == null && this.høyre == null;
+    }
 }

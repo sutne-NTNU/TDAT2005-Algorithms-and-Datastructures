@@ -1,9 +1,8 @@
-package øving_5.oppgave_1;
+package oppgave_1;
 
 class Navneliste
 {
-    private static String[] navn =
-    {
+    private static String[] navn = {
         "Adolfsen,Joakim Moe",
         "Andersen,Tobias Meyer",
         "Andersson,Vegard",
@@ -102,7 +101,7 @@ class Navneliste
         "Årdal,Simon"
     };
 
-    static String[] hent_navn( )
+    static String[] hent_navn()
     {
         return navn;
     }

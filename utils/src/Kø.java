@@ -1,10 +1,8 @@
-package utils;
+package src;
 
 public class Kø
 {
     public Kø_medlem FIRST;
-
-
 
     public Kø()
     {
@@ -15,12 +13,10 @@ public class Kø
         this.FIRST = new Kø_medlem(first);
     }
 
-
-
     public Object get_Next_In_Line()
     {
         Object neste = FIRST.obj;
-        this.FIRST   = FIRST.nextInLine;
+        this.FIRST = FIRST.nextInLine;
         return neste;
     }
 
@@ -28,8 +24,6 @@ public class Kø
     {
         return FIRST == null;
     }
-
-
 
     public void add(Object obj)
     {
@@ -42,21 +36,15 @@ public class Kø
     }
 }
 
-
-
 class Kø_medlem
 {
     Kø_medlem nextInLine = null;
     Object obj;
 
-
-
     Kø_medlem(Object obj)
     {
         this.obj = obj;
     }
-
-
 
     void behind_me(Object obj)
     {
