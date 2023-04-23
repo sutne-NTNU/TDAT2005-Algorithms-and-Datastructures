@@ -14,7 +14,7 @@ public class Decompressor
     public Decompressor(String file)
     {
         this.reader = new Reader(Config.COMPRESSED_PATH + file);
-        this.writer = new Writer(Config.DECOMPRESSED_PATH + file);
+        this.writer = new Writer(Config.DECOMPRESSED_PATH + file, false);
 
         decompress();
 
@@ -22,48 +22,54 @@ public class Decompressor
         writer.close();
     }
 
+    public static void main(String[] args)
+    {
+        new Decompressor("Great Expectations.txt");
+    }
+
     private void decompress()
     {
-
-        short b;
-        int curIndex = 0; // current position in the uncompressed file
-        int offset;
-
-        while ((b = reader.readShort()) != 0)
+        short offset;
+        while ((offset = reader.readShort()) != 0)
         {
-            if (b > 0) // b is how many clean characters that follow
+            if (offset > 0)
             {
-                for (int i = 0; i < b; i++)
+                // offset is number of regular characters that follow in file
+                for (int i = 0; i < offset; i++)
                 {
-                    char c = (char)reader.readByte();
+                    char c = reader.readChar();
                     writer.writeChar(c);
-                    buffer.append(c);
-                    curIndex++;
+                    addToBuffer(c);
                 }
-                // offset in  reference will be the next short in file
-                offset = reader.readShort();
             }
-            else // b is offset in a reference
+            else
             {
-                offset = b;
+                // Offset is negative, its a reference, read the length from file as well
+                int length = reader.readByte();
+                // look backwards in buffer to find correct chars
+                int start = buffer.length() + offset;
+                int end = start + length;
+                String chars = "";
+                for (int i = start; i < end; i++)
+                {
+                    char c = buffer.charAt(i);
+                    chars += c;
+                    writer.writeChar(c);
+                }
+                for (int i = 0; i < length; i++)
+                {
+                    addToBuffer(chars.charAt(i));
+                }
             }
-
-            int start = curIndex + offset; // point in buffer to start reading from
-            int length = reader.readByte();
-            for (int indeks = start; indeks < (start + length); indeks++)
-            {
-                char c = buffer.charAt(indeks);
-                writer.writeChar(c);
-                buffer.append(c);
-                curIndex++;
-            }
-            trimBuffer();
         }
     }
 
-    private void trimBuffer()
+    private void addToBuffer(char c)
     {
-        if (buffer.length() <= Config.BUFFER_SIZE) return;
-        buffer.delete(0, buffer.length() - Config.BUFFER_SIZE);
+        buffer.append(c);
+        if (buffer.length() == Config.BUFFER_SIZE + 1)
+        {
+            buffer.delete(0, 1);
+        }
     }
 }

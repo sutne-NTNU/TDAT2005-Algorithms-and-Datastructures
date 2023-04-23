@@ -7,127 +7,144 @@ import src.util.Writer;
 public class Compressor
 {
 
-    private StringBuffer searchBuffer = new StringBuffer(Config.BUFFER_SIZE);
+    private StringBuffer buffer = new StringBuffer(Config.BUFFER_SIZE);
     private Reader reader;
     private Writer writer;
+    private Writer vizWriter;
 
     public Compressor(String name)
     {
-        this.reader = new Reader(Config.ORIGINAL_PATH + name);
-        this.writer = new Writer(Config.COMPRESSED_PATH + name);
+        reader = new Reader(Config.ORIGINAL_PATH + name);
+        writer = new Writer(Config.COMPRESSED_PATH + name, false);
+        vizWriter = new Writer((Config.COMPRESSED_PATH + name).replace(".txt", " - Visualized.txt"), true);
 
         compress();
 
         reader.close();
         writer.close();
+        vizWriter.close();
+    }
+
+    public static void main(String[] args)
+    {
+        new Compressor("Great Expectations.txt");
     }
 
     private void compress()
     {
-        char nextChar;                      // next charcater from file
-        int matchIndex = 0, tempMatchIndex; // keeps track of where a match is in the new file
-        int currentIndex = -1;              // index of the character in file we are curently looking at
-        String currentMatch = "";           // characters matching something in the buffer
-        String not_matched = "";            // keeps track of characters that doesnt match and matches that arent long enough
+        char newCharacter;
+        String matched = "";
+        String notMatched = "";
 
-        while ((nextChar = (char)reader.readByte()) != 0)
+        while ((newCharacter = reader.readChar()) != 0)
         {
-            currentIndex++;
-            tempMatchIndex = searchBuffer.indexOf(currentMatch + nextChar); // look in our search buffer for a match
+            // Check if new character is part of a match
+            boolean isMatch = buffer.indexOf(matched + newCharacter) != -1;
 
-            searchBuffer.append(nextChar); // add the character to the search buffer
-
-            if (tempMatchIndex != -1 && currentMatch.length() < 127) // if match is found, and currentmatch is not longer than a byte can reference
+            if (isMatch)
             {
-                currentMatch += nextChar;    // add nextChar to currentMatch
-                matchIndex = tempMatchIndex; // update index of match
+                matched += newCharacter;
+                if (matched.length() == Config.MAX_MATCH_LENGTH)
+                {
+                    writeReference(matched);
+                    matched = "";
+                }
             }
-            else // match is not found
+            else
             {
-                if (currentMatch.length() == 0) // no matching charachters
+                // There is no longer a match, but there might have been a match on the previous iteration
+                if (shouldReference(matched))
                 {
-                    not_matched += nextChar;
+                    if (notMatched.length() > 0)
+                    {
+                        writeUnmatched(notMatched);
+                        notMatched = "";
+                    }
+                    writeReference(matched);
                 }
-                else if (currentMatch.length() > Config.SIZE_OF_REFERENCE) // match long enough to be replaced is found
+                else
                 {
-                    // first: print number of unmatched characters, and the unmatched charaters (if there are any)
-                    if (not_matched.length() > 0)
-                    {
-                        write_unmatched(not_matched);
-                    }
-                    // then the reference to the macthed sequence we have found
-                    write_reference(currentIndex, matchIndex, currentMatch.length());
-
-                    // the next char is not included in the matched string, but it can still match whats behind it
-                    if (hasMatch(searchBuffer, nextChar))
-                    {
-                        currentMatch = "" + nextChar;
-                        not_matched = "";
-                    }
-                    else
-                    {
-                        currentMatch = "";
-                        not_matched = "" + nextChar;
-                    }
+                    notMatched += matched;
                 }
-                else // match is found, but its not long enough to replace with a reference
+                matched = "";
+                notMatched += newCharacter;
+                if (notMatched.length() == Config.MAX_NOT_MATCH_LENGTH)
                 {
-                    if (hasMatch(searchBuffer, nextChar))
-                    {
-                        not_matched += currentMatch;
-                        currentMatch = "" + nextChar;
-                    }
-                    else
-                    {
-                        not_matched += currentMatch + nextChar;
-                        currentMatch = "";
-                    }
+                    writeUnmatched(notMatched);
+                    notMatched = "";
                 }
-                // Trim search buffer if it has gotten too long
-                trimBuffer();
             }
+            addToBuffer(newCharacter);
         }
-        currentIndex++;
-        // flush any match/unMatch we may have had when we reached end of file
-        if (currentMatch.length() > Config.SIZE_OF_REFERENCE)
+
+        // End of file reached, write remaining matches and unmatched
+        if (shouldReference(matched))
         {
-            if (not_matched.length() > 0)
-            {
-                write_unmatched(not_matched);
-            }
-            write_reference(currentIndex, matchIndex, currentMatch.length());
+            writeReference(matched);
         }
         else
         {
-            not_matched += currentMatch;
-            write_unmatched(not_matched);
+            notMatched += matched;
         }
-    }
-
-    private void trimBuffer()
-    {
-        if (searchBuffer.length() > Config.BUFFER_SIZE)
+        if (notMatched.length() > 0)
         {
-            searchBuffer.delete(0, searchBuffer.length() - Config.BUFFER_SIZE);
+            writeUnmatched(notMatched);
         }
     }
 
-    /* [offset, length] */
-    private void write_reference(int curIndex, int match_index, int length_of_match)
+    /**
+     * [-offset,length]
+     *
+     * Offset will be negative, that way decompressor knows it is a reference value.
+
+     Example:
+
+        buffer: "Hello World, World" - length: 18
+        str: " World" - length: 6
+        matchIndex: 5
+        offset: 5 - (18 - 6) = -7
+        ref = [-7,6]
+
+     */
+    private void writeReference(String str)
     {
-        int offset = match_index - (curIndex - length_of_match);
-        writer.writeReference(offset, length_of_match);
+        int matchIndex = buffer.indexOf(str);
+        int offset = matchIndex - (buffer.length() - str.length());
+        writer.writeReference(offset, str.length());
+        vizWriter.writeReference(offset, str.length());
     }
 
-    /* [length]unmatched_sequence */
-    private void write_unmatched(String unMatched)
+    /**
+     * Write the string to the file, prepended with its length for decompression.
+     *
+     * [length]str
+     */
+    private void writeUnmatched(String str)
     {
-        writer.writeShort(unMatched.length());
-        writer.print(unMatched);
+        writer.writeStringWithLength(str);
+        vizWriter.writeStringWithLength(str);
     }
 
-    private boolean hasMatch(StringBuffer buffer, char c)
+    /**
+     * Add char to buffer and trim buffer to max Config.BUFFER_SIZE
+     *
+     * Return true if buffer was not full, false if a char was removed
+     */
+    private void addToBuffer(char c)
     {
-        return buffer.indexOf("" + c) != -1;
+        buffer.append(c);
+        if (buffer.length() == Config.BUFFER_SIZE + 1)
+        {
+            buffer.deleteCharAt(0); // remove oldest char
+        }
+    }
+
+    /**
+     * Checks if the string is long enough to be replaced with a reference,
+     * if its shorter, the original str takes less space.
+     */
+    private boolean shouldReference(String str)
+    {
+        return str.length() > Config.LENGTH_OF_REFERENCE;
     }
 }
