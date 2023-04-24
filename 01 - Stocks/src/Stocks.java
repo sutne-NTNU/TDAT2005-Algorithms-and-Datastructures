@@ -4,6 +4,20 @@ import java.util.ArrayList;
 
 public class Stocks
 {
+    public static void main(String[] args)
+    {
+        System.out.println("\n");
+        final int NUM_DAYS = 10_000;
+        Day[] days = Stocks.initializeDays(NUM_DAYS);
+
+        long start = System.currentTimeMillis();
+        Stocks.findBestBuySell(days);
+        long timeMs = System.currentTimeMillis() - start;
+
+        System.out.printf("Time for %d days: %d ms\n", NUM_DAYS, timeMs);
+        System.out.println("\n");
+    }
+
     public static Day[] initializeDays(int numDays)
     {
         Day.nrCounter = 0; // reset static counter
@@ -78,9 +92,10 @@ public class Stocks
                 profitPercent = profitValue / buyDay.value * 100;
             }
         }
+        String profitPercentStr = String.format("%.1f", profitPercent);
         System.out.println("Results: "
-                           + "\n\tBuy on day:  " + bestBuyDay + " (value: " + days[bestBuyDay].value + ")"
-                           + "\n\tSell on day: " + bestSellDay + " (value: " + days[bestSellDay].value + ")"
-                           + "\n\tProfit:      " + ColorPrint.string("green", profitPercent + "%"));
+                           + "\n\tBuy on day:  " + bestBuyDay + " \t(value: " + Printer.toString(days[bestBuyDay].value) + ")"
+                           + "\n\tSell on day: " + bestSellDay + " \t(value: " + Printer.toString(days[bestSellDay].value) + ")"
+                           + "\n\tProfit:      " + Printer.coloured("green", profitPercentStr + "%"));
     }
 }
