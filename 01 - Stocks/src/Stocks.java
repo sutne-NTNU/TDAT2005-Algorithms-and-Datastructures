@@ -1,5 +1,7 @@
 package src;
 
+import static src.Printer.green;
+
 import java.util.ArrayList;
 
 public class Stocks
@@ -92,10 +94,9 @@ public class Stocks
                 profitPercent = profitValue / buyDay.value * 100;
             }
         }
-        String profitPercentStr = String.format("%.1f", profitPercent);
         System.out.println("Results: "
                            + "\n\tBuy on day:  " + bestBuyDay + " \t(value: " + Printer.toString(days[bestBuyDay].value) + ")"
                            + "\n\tSell on day: " + bestSellDay + " \t(value: " + Printer.toString(days[bestSellDay].value) + ")"
-                           + "\n\tProfit:      " + Printer.coloured("green", profitPercentStr + "%"));
+                           + "\n\tProfit:      " + green(Printer.toString(profitPercent) + "%"));
     }
 }

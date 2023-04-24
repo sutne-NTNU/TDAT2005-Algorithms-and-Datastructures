@@ -1,5 +1,8 @@
 package src;
 
+import static src.Printer.blue;
+import static src.Printer.yellow;
+
 public class Sorting
 {
 
@@ -23,7 +26,7 @@ public class Sorting
         }
         else
         {
-            System.out.println("\nMy Quicksort, using BubbleSort Limit: " + Printer.coloured("blue", bubbleLimit));
+            System.out.println("\nMy Quicksort, using BubbleSort Limit: " + blue(bubbleLimit));
         }
         long start = System.currentTimeMillis();
         {
@@ -31,7 +34,7 @@ public class Sorting
         }
         double time = System.currentTimeMillis() - start;
 
-        System.out.println("\tTime:      " + Printer.coloured("yellow", time + "ms"));
+        System.out.println("\tTime:      " + yellow(time + "ms"));
         System.out.println("\tisSorted:  " + Printer.toString(array.isSorted()));
         System.out.println("\ttestSum:   " + Printer.toString(array.hasSameSum()));
     }

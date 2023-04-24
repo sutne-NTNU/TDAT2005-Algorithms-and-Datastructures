@@ -1,8 +1,8 @@
-package oppgave_1;
+package src.task1;
 
-class Navneliste
+class NameList
 {
-    private static String[] navn = {
+    public static String[] names = {
         "Adolfsen,Joakim Moe",
         "Andersen,Tobias Meyer",
         "Andersson,Vegard",
@@ -100,9 +100,4 @@ class Navneliste
         "Østmo-Sæter,Lars Olsnes",
         "Årdal,Simon"
     };
-
-    static String[] hent_navn()
-    {
-        return navn;
-    }
 }

@@ -1,33 +1,12 @@
 package src;
 
-import java.io.BufferedReader;
-
 public class Program
 {
-    public static void vent(int millis)
+    public static void sleep(int ms)
     {
         try
         {
-            Thread.sleep(millis);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public static void close(Object obj)
-    {
-        if (obj == null)
-        {
-            return;
-        }
-        try
-        {
-            if (obj instanceof BufferedReader)
-            {
-                ((BufferedReader)obj).close();
-            }
+            Thread.sleep(ms);
         }
         catch (Exception e)
         {
