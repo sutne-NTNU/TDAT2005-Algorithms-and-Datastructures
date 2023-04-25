@@ -1,18 +1,18 @@
 {
   "java.project.sourcePaths": [
-    "01 - Stocks",
-    "02 - Recursion",
-    "03 - Sorting",
-    "04 - Lists, Heaps and Trees",
-    "05 - Hashtables",
-    "06 - Discrete Mathemathics 1",
-    "07 - Unweighted graph",
-    "08 - Weighted graph",
-    "09 - Discrete Mathemathics 2",
-    "10 - Discrete Mathemathics 3",
-    "11 - Discrete Mathemathics 4",
-    "12 - Data Compression",
+    "utils",
     "13 - A-star",
-    "utils"
+    "12 - Data Compression",
+    "11 - Discrete Mathemathics 4",
+    "10 - Discrete Mathemathics 3",
+    "09 - Discrete Mathemathics 2",
+    "08 - Weighted Graph",
+    "07 - Unweighted Graph",
+    "06 - Discrete Mathemathics 1",
+    "05 - Hashtables",
+    "04 - Lists, Heaps and Trees",
+    "03 - Sorting",
+    "02 - Recursion",
+    "01 - Stocks"
   ]
 }
