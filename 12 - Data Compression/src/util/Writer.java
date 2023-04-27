@@ -1,8 +1,9 @@
 package src.util;
+import static src.Printer.red;
+
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
-import src.ColorPrint;
 
 public class Writer
 {
@@ -18,7 +19,7 @@ public class Writer
         }
         catch (Exception e)
         {
-            ColorPrint.print("red", "Error");
+            System.out.println(red("ERROR"));
             System.out.println(": " + System.getProperty("user.dir") + "/" + path);
             e.printStackTrace();
             System.exit(1);
@@ -29,7 +30,7 @@ public class Writer
     {
         try
         {
-            writer.writeByte((byte)c);
+            this.writer.writeByte((byte)c);
         }
         catch (Exception e)
         {
@@ -41,7 +42,7 @@ public class Writer
     {
         try
         {
-            writer.writeShort(value);
+            this.writer.writeShort(value);
         }
         catch (Exception e)
         {
@@ -53,7 +54,7 @@ public class Writer
     {
         try
         {
-            writer.writeByte(value);
+            this.writer.writeByte(value);
         }
         catch (Exception e)
         {
@@ -61,7 +62,9 @@ public class Writer
         }
     }
 
-    // [offset,length]
+    /**
+     *  [offset,length]
+     */
     public void writeReference(int offset, int length)
     {
         if (this.VISUALIZE)
@@ -75,7 +78,9 @@ public class Writer
         }
     }
 
-    // [length]string
+    /**
+     * [length]str
+     */
     public void writeStringWithLength(String str)
     {
         if (this.VISUALIZE)
@@ -107,11 +112,11 @@ public class Writer
 
     public void close()
     {
-        if (writer == null) return;
+        if (this.writer == null) return;
         try
         {
-            writer.flush();
-            writer.close();
+            this.writer.flush();
+            this.writer.close();
         }
         catch (Exception e)
         {

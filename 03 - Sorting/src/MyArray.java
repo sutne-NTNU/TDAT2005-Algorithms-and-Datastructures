@@ -26,11 +26,11 @@ public class MyArray
         this.sorted = copy(this.original);
         if (bubbleSortLimit > 0)
         {
-            myQuicksort(0, this.sorted.length - 1, bubbleSortLimit);
+            this.myQuicksort(0, this.sorted.length - 1, bubbleSortLimit);
         }
         else
         {
-            quicksort(0, this.sorted.length - 1);
+            this.quicksort(0, this.sorted.length - 1);
         }
     }
 
@@ -39,12 +39,12 @@ public class MyArray
         int subsectionLength = rightIndex - leftIndex;
         if (subsectionLength <= bubbleSortLimit)
         {
-            bubbleSort(leftIndex, rightIndex);
+            this.bubbleSort(leftIndex, rightIndex);
             return;
         }
-        int pivotPoint = split(leftIndex, rightIndex);
-        myQuicksort(leftIndex, pivotPoint - 1, bubbleSortLimit);
-        myQuicksort(pivotPoint + 1, rightIndex, bubbleSortLimit);
+        int pivotPoint = this.split(leftIndex, rightIndex);
+        this.myQuicksort(leftIndex, pivotPoint - 1, bubbleSortLimit);
+        this.myQuicksort(pivotPoint + 1, rightIndex, bubbleSortLimit);
     }
 
     public void bubbleSort(int leftIndex, int rightIndex)
@@ -54,7 +54,7 @@ public class MyArray
             for (int j = leftIndex; j + i < rightIndex; j++)
             {
                 if (this.sorted[j] <= this.sorted[j + 1]) continue;
-                swap(j, j + 1);
+                this.swap(j, j + 1);
             }
         }
     }
@@ -64,12 +64,12 @@ public class MyArray
         int subsectionLength = rightIndex - leftIndex;
         if (subsectionLength <= 2)
         {
-            median3sort(leftIndex, rightIndex);
+            this.median3sort(leftIndex, rightIndex);
             return;
         }
-        int delepos = split(leftIndex, rightIndex);
-        quicksort(leftIndex, delepos - 1);
-        quicksort(delepos + 1, rightIndex);
+        int delepos = this.split(leftIndex, rightIndex);
+        this.quicksort(leftIndex, delepos - 1);
+        this.quicksort(delepos + 1, rightIndex);
     }
 
     private void swap(int i, int j)
@@ -82,28 +82,28 @@ public class MyArray
     private int split(int left, int right)
     {
         int leftIndex, rightIndex;
-        int median = median3sort(left, right);
+        int median = this.median3sort(left, right);
         int dv = this.sorted[median];
-        swap(median, right - 1);
+        this.swap(median, right - 1);
         for (leftIndex = left, rightIndex = right - 1;;)
         {
             while (this.sorted[++leftIndex] < dv) { }
             while (this.sorted[--rightIndex] > dv) { }
             if (rightIndex <= leftIndex) break;
-            swap(leftIndex, rightIndex);
+            this.swap(leftIndex, rightIndex);
         }
-        swap(leftIndex, right - 1);
+        this.swap(leftIndex, right - 1);
         return leftIndex;
     }
 
     private int median3sort(int leftIndex, int rightIndex)
     {
         int medianIndex = (leftIndex + rightIndex) / 2;
-        if (this.sorted[medianIndex] < this.sorted[leftIndex]) swap(leftIndex, medianIndex);
+        if (this.sorted[medianIndex] < this.sorted[leftIndex]) this.swap(leftIndex, medianIndex);
         if (this.sorted[medianIndex] > this.sorted[rightIndex])
         {
-            swap(medianIndex, rightIndex);
-            if (this.sorted[leftIndex] > this.sorted[medianIndex]) swap(leftIndex, medianIndex);
+            this.swap(medianIndex, rightIndex);
+            if (this.sorted[leftIndex] > this.sorted[medianIndex]) this.swap(leftIndex, medianIndex);
         }
         return medianIndex;
     }

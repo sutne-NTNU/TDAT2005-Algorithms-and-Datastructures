@@ -1,5 +1,5 @@
 package src.util;
-import static src.ColorPrint.println;
+import static src.Printer.red;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -20,12 +20,12 @@ public class Reader
         catch (FileNotFoundException e)
         {
             String searchPath = System.getProperty("user.dir") + "/" + path;
-            println("red", "File Not Found: " + searchPath);
+            System.out.println(red("File Not Found: " + searchPath));
             System.exit(1);
         }
         catch (Exception e)
         {
-            println("red", "ERROR");
+            System.out.println(red("ERROR"));
             e.printStackTrace();
         }
     }
@@ -34,7 +34,7 @@ public class Reader
     {
         try
         {
-            return reader.readShort();
+            return this.reader.readShort();
         }
         catch (EOFException e)
         {
@@ -51,7 +51,7 @@ public class Reader
     {
         try
         {
-            return reader.readByte();
+            return this.reader.readByte();
         }
         catch (EOFException eofe)
         {
@@ -71,10 +71,10 @@ public class Reader
 
     public void close()
     {
-        if (reader == null) return;
+        if (this.reader == null) return;
         try
         {
-            reader.close();
+            this.reader.close();
         }
         catch (Exception e)
         {

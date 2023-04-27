@@ -14,20 +14,15 @@ public class Compressor
 
     public Compressor(String name)
     {
-        reader = new Reader(Config.ORIGINAL_PATH + name);
-        writer = new Writer(Config.COMPRESSED_PATH + name, false);
-        vizWriter = new Writer((Config.COMPRESSED_PATH + name).replace(".txt", " - Visualized.txt"), true);
+        this.reader = new Reader(Config.ORIGINAL_PATH + name);
+        this.writer = new Writer(Config.COMPRESSED_PATH + name, false);
+        this.vizWriter = new Writer((Config.COMPRESSED_PATH + name).replace(".txt", " - Visualized.txt"), true);
 
-        compress();
+        this.compress();
 
-        reader.close();
-        writer.close();
-        vizWriter.close();
-    }
-
-    public static void main(String[] args)
-    {
-        new Compressor("Great Expectations.txt");
+        this.reader.close();
+        this.writer.close();
+        this.vizWriter.close();
     }
 
     private void compress()
@@ -36,31 +31,31 @@ public class Compressor
         String matched = "";
         String notMatched = "";
 
-        while ((newCharacter = reader.readChar()) != 0)
+        while ((newCharacter = this.reader.readChar()) != 0)
         {
             // Check if new character is part of a match
-            boolean isMatch = buffer.indexOf(matched + newCharacter) != -1;
+            boolean isMatch = this.buffer.indexOf(matched + newCharacter) != -1;
 
             if (isMatch)
             {
                 matched += newCharacter;
                 if (matched.length() == Config.MAX_MATCH_LENGTH)
                 {
-                    writeReference(matched);
+                    this.writeReference(matched);
                     matched = "";
                 }
             }
             else
             {
                 // There is no longer a match, but there might have been a match on the previous iteration
-                if (shouldReference(matched))
+                if (this.shouldReference(matched))
                 {
                     if (notMatched.length() > 0)
                     {
-                        writeUnmatched(notMatched);
+                        this.writeUnmatched(notMatched);
                         notMatched = "";
                     }
-                    writeReference(matched);
+                    this.writeReference(matched);
                 }
                 else
                 {
@@ -70,17 +65,17 @@ public class Compressor
                 notMatched += newCharacter;
                 if (notMatched.length() == Config.MAX_NOT_MATCH_LENGTH)
                 {
-                    writeUnmatched(notMatched);
+                    this.writeUnmatched(notMatched);
                     notMatched = "";
                 }
             }
-            addToBuffer(newCharacter);
+            this.addToBuffer(newCharacter);
         }
 
         // End of file reached, write remaining matches and unmatched
-        if (shouldReference(matched))
+        if (this.shouldReference(matched))
         {
-            writeReference(matched);
+            this.writeReference(matched);
         }
         else
         {
@@ -88,7 +83,7 @@ public class Compressor
         }
         if (notMatched.length() > 0)
         {
-            writeUnmatched(notMatched);
+            this.writeUnmatched(notMatched);
         }
     }
 
@@ -108,10 +103,10 @@ public class Compressor
      */
     private void writeReference(String str)
     {
-        int matchIndex = buffer.indexOf(str);
-        int offset = matchIndex - (buffer.length() - str.length());
-        writer.writeReference(offset, str.length());
-        vizWriter.writeReference(offset, str.length());
+        int matchIndex = this.buffer.indexOf(str);
+        int offset = matchIndex - (this.buffer.length() - str.length());
+        this.writer.writeReference(offset, str.length());
+        this.vizWriter.writeReference(offset, str.length());
     }
 
     /**
@@ -121,8 +116,8 @@ public class Compressor
      */
     private void writeUnmatched(String str)
     {
-        writer.writeStringWithLength(str);
-        vizWriter.writeStringWithLength(str);
+        this.writer.writeStringWithLength(str);
+        this.vizWriter.writeStringWithLength(str);
     }
 
     /**
@@ -132,10 +127,10 @@ public class Compressor
      */
     private void addToBuffer(char c)
     {
-        buffer.append(c);
-        if (buffer.length() == Config.BUFFER_SIZE + 1)
+        this.buffer.append(c);
+        if (this.buffer.length() == Config.BUFFER_SIZE + 1)
         {
-            buffer.deleteCharAt(0); // remove oldest char
+            this.buffer.deleteCharAt(0); // remove oldest char
         }
     }
 

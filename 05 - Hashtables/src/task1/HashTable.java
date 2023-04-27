@@ -41,39 +41,39 @@ public class HashTable
             if (name.charAt(i) == ',') continue;
             hash += (i + 1) * name.charAt(i);
         }
-        return hash % CAPACITY;
+        return hash % this.CAPACITY;
     }
 
     void insert(String name)
     {
         if (name == null) return;
-        int hash = hash(name);
+        int hash = this.hash(name);
 
-        boolean indexIsFree = table[hash] == null;
+        boolean indexIsFree = this.table[hash] == null;
         if (indexIsFree)
         {
-            table[hash] = new Node(name);
+            this.table[hash] = new Node(name);
             return;
         }
-        handleCollition(hash, table[hash], 1, name);
+        this.handleCollition(hash, this.table[hash], 1, name);
     }
 
     void handleCollition(int index, Node node, int collitionCounter, String name)
     {
-        numCollitions++;
+        this.numCollitions++;
         if (node.next == null)
         {
             node.next = new Node(name);
             return;
         }
-        handleCollition(index, node.next, collitionCounter + 1, name);
+        this.handleCollition(index, node.next, collitionCounter + 1, name);
     }
 
     int indexOf(String name)
     {
-        int index = hash(name);
-        if (table[index] == null) return -1;
-        if (nameIsInLinkedList(table[index], name))
+        int index = this.hash(name);
+        if (this.table[index] == null) return -1;
+        if (this.nameIsInLinkedList(this.table[index], name))
         {
             return index;
         }
@@ -84,13 +84,13 @@ public class HashTable
     {
         if (node.name.equals(name)) return true;
         if (node.next == null) return false;
-        return nameIsInLinkedList(node.next, name);
+        return this.nameIsInLinkedList(node.next, name);
     }
 
     int getNumElements()
     {
         int numElements = 0;
-        for (Node n : table)
+        for (Node n : this.table)
         {
             if (n == null) continue;
             numElements += 1 + n.getNumChildren();
@@ -102,10 +102,10 @@ public class HashTable
     public String toString()
     {
         String str = "";
-        for (int i = 0; i < table.length; i++)
+        for (int i = 0; i < this.table.length; i++)
         {
             str += i + ": \t";
-            Node n = table[i];
+            Node n = this.table[i];
             str += "[" + (n == null ? "" : n) + "]\n";
         }
         return str;

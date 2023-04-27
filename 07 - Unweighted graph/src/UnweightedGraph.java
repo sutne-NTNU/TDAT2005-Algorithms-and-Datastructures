@@ -44,7 +44,7 @@ class UnweightedGraph
 
         while (queue.first != null && !foundEnd)
         {
-            Node07 node = queue.next();
+            Node07 node = queue.getNext();
             for (int neighbor : node.neighborIndices)
             {
                 if (this.nodes[neighbor].isVisited) continue;

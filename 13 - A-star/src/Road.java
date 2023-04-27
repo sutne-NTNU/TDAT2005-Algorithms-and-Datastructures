@@ -1,27 +1,26 @@
 package src;
 
-class Road
+public class Road
 {
-    public int TO;
-    public int drivetime; // 1/100 sekunder
-    public int length;    // meter
+    public int toIndex;
+    /**
+     * Time to drive this road in 1/100 seconds
+     */
+    public int time;
+    /**
+     * Speed Limit in km/h
+     */
+    public int speedLimit;
+    /**
+     * length in meters
+     */
+    public int length;
 
-    Road next;
-
-    Road(int to, int driveTime, int length, int fartsgrense)
+    Road(int toIndex, int time, int length, int speedLimit)
     {
-        this.TO = to;
-        this.drivetime = driveTime;
+        this.toIndex = toIndex;
+        this.time = time;
         this.length = length;
-    }
-
-    void new_road(Road nyRoad)
-    {
-        if (next == null)
-        {
-            next = nyRoad;
-            return;
-        }
-        next.new_road(nyRoad);
+        this.speedLimit = speedLimit;
     }
 }

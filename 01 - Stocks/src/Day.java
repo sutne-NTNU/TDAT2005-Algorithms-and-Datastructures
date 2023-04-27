@@ -15,7 +15,7 @@ public class Day
     {
         this.nr = nrCounter;
         this.change = 3.0 - 6.0 * Math.random(); // -3.0% to +3.0%
-        this.value = prevValue * (100.0 + change) / 100.0;
+        this.value = prevValue * (100.0 + this.change) / 100.0;
 
         nrCounter += 1;
         prevValue = this.value;
@@ -24,6 +24,6 @@ public class Day
     @Override
     public String toString()
     {
-        return String.format("Day: (nr: %d, change: %.2f%%, value: %.2f)", nr, change, value);
+        return String.format("Day: (nr: %d, change: %.2f%%, value: %.2f)", this.nr, this.change, this.value);
     }
 }

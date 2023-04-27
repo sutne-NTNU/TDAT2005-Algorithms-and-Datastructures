@@ -3,9 +3,9 @@ package src.task3;
 /*
 6.2-5:
 
-a) likt eksempelet i øvingen
-b) inordentraversering
-c) postordentraversering
+a) same as example in assignment
+b) in-order-traversal
+c) post-order-traversal
  */
 
 public class ExpressionTree
@@ -20,18 +20,18 @@ public class ExpressionTree
 
     public ExpressionTree()
     {
-        root = new Node("/", true);
+        this.root = new Node("/", true);
 
-        root.left = new Node("*");
-        root.left.left = new Node(3);
-        root.left.right = new Node("+");
-        root.left.right.left = new Node(2);
-        root.left.right.right = new Node(4);
+        this.root.left = new Node("*");
+        this.root.left.left = new Node(3);
+        this.root.left.right = new Node("+");
+        this.root.left.right.left = new Node(2);
+        this.root.left.right.right = new Node(4);
 
-        root.right = new Node("-");
-        root.right.left = new Node(7);
-        root.right.right = new Node("*");
-        root.right.right.left = new Node(2);
-        root.right.right.right = new Node(2);
+        this.root.right = new Node("-");
+        this.root.right.left = new Node(7);
+        this.root.right.right = new Node("*");
+        this.root.right.right.left = new Node(2);
+        this.root.right.right.right = new Node(2);
     }
 }

@@ -8,10 +8,33 @@ public class Printer
 
     public static void main(String[] args)
     {
+        System.out.println();
         String[] colors = new String[] {
             "gray", "red", "yellow", "green", "cyan", "blue", "magenta", "black"
         };
         for (String color : colors) System.out.println(coloured(color, color));
+        System.out.println("\nArray: " + black(new int[] { 1, 2, 3 }));
+        System.out.println("Boolean: " + toString(true) + " " + toString(false));
+        System.out.println("Double/Float: " + black(11.0 / 7.0));
+        System.out.println("Null value: " + black(null) + "\n");
+    }
+
+    private static String getColorCode(String color)
+    {
+        String colorCode = "00";
+        colorCode = switch (color)
+        {
+            case "black" -> "30";
+            case "red" -> "31";
+            case "green" -> "32";
+            case "yellow" -> "33";
+            case "blue" -> "34";
+            case "magenta" -> "35";
+            case "cyan" -> "36";
+            case "gray" -> "37";
+            default -> throw new IllegalArgumentException("Unknown color: " + color);
+        };
+        return colorCode;
     }
 
     private static String coloured(String color, Object obj)
@@ -24,22 +47,11 @@ public class Printer
         {
             return coloured(color, toString((double)obj));
         }
-
-        String colorCode = "00";
-        switch (color)
+        if (obj instanceof int[])
         {
-            case "black": colorCode = "30"; break;
-            case "red": colorCode = "31"; break;
-            case "green": colorCode = "32"; break;
-            case "yellow": colorCode = "33"; break;
-            case "blue": colorCode = "34"; break;
-            case "magenta": colorCode = "35"; break;
-            case "cyan": colorCode = "36"; break;
-            case "gray": colorCode = "37"; break;
-            default:
-                throw new IllegalArgumentException("Unknown color: " + color);
+            return coloured(color, toString((int[])obj));
         }
-        return OPEN + colorCode + BOLD + obj.toString() + CLOSE;
+        return OPEN + getColorCode(color) + BOLD + obj.toString() + CLOSE;
     }
 
     public static String black(Object obj) { return coloured("black", obj); }
@@ -51,19 +63,47 @@ public class Printer
     public static String cyan(Object obj) { return coloured("cyan", obj); }
     public static String gray(Object obj) { return coloured("gray", obj); }
 
+    public static void setConsoleColor(String color)
+    {
+        System.out.print(OPEN + getColorCode(color) + BOLD);
+    }
+
+    public static void resetConsoleColor()
+    {
+        System.out.print(CLOSE);
+    }
+
     public static String toString(boolean b)
     {
-        return coloured(b ? "green" : "red", b);
+        if(b) return coloured("green", "true");
+        return coloured("red", "false");
     }
 
     public static String toString(int[] array)
     {
         String str = "[";
-        for (int i = 0; i < array.length - 2; i++)
+        if (array.length > 0)
         {
-            str += array[i] + ", ";
+            for (int i = 0; i < array.length - 1; i++)
+            {
+                str += array[i] + ",";
+            }
+            str += array[array.length - 1];
         }
-        str += array[array.length - 1];
+        return str + "]";
+    }
+
+    public static String toString(char[] array)
+    {
+        String str = "[";
+        if (array.length > 0)
+        {
+            for (int i = 0; i < array.length - 1; i++)
+            {
+                str += "'" + array[i] + "',";
+            }
+            str += "'" + array[array.length - 1] + "'";
+        }
         return str + "]";
     }
 

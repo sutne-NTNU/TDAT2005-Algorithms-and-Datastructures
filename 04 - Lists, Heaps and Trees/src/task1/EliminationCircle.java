@@ -18,14 +18,14 @@ public class EliminationCircle
 
     public EliminationCircle(int numPeople)
     {
-        firstPerson = new Person(1);
-        Person previous = firstPerson;
+        this.firstPerson = new Person(1);
+        Person previous = this.firstPerson;
 
         for (int i = 2; i <= numPeople; i++)
         {
             Person ny = new Person(i);
             previous.next = ny;
-            ny.next = firstPerson;
+            ny.next = this.firstPerson;
             previous = ny;
         }
     }
@@ -33,7 +33,7 @@ public class EliminationCircle
     public int findBestPosition(int interval)
     {
         Person previous = null;
-        Person person = firstPerson;
+        Person person = this.firstPerson;
         int counter = 0;
 
         while (person.next != person)
@@ -52,7 +52,7 @@ public class EliminationCircle
 
     public void print(int limit)
     {
-        Person person = firstPerson;
+        Person person = this.firstPerson;
         for (int i = limit; i > 0; i--)
         {
             System.out.println(person);

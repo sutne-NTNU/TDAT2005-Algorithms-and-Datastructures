@@ -13,6 +13,6 @@ public class Person
     @Override
     public String toString()
     {
-        return "Person(position=" + startPosition + ", next=" + next.startPosition + ")";
+        return "Person(position=" + this.startPosition + ", next=" + this.next.startPosition + ")";
     }
 }

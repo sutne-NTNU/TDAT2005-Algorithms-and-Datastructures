@@ -1,6 +1,9 @@
 package src;
 
-import static src.ColorPrint.println;
+import static src.Printer.blue;
+import static src.Printer.green;
+import static src.Printer.red;
+import static src.Printer.yellow;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -21,7 +24,6 @@ public class LempelZiv
     public static void main(String[] args)
     {
         testOnFile("Dylan Thomas.txt");
-        testOnFile("Great Expectations.txt");
     }
 
     private static void testOnFile(String file)
@@ -36,16 +38,16 @@ public class LempelZiv
         long compressedSize = compressed.length();
         long decompressedSize = decompressed.length();
 
-        println("blue", "\n" + file);
+        System.out.println(blue("\n" + file));
         System.out.println("Original Size: \t\t" + originalSize + " byte");
         double ratio = 1.0 * compressedSize / originalSize;
         System.out.print("Compressed Size: \t" + compressedSize + " byte \t- ");
-        println("yellow", String.format("%.1f%% Of Original", 100 * ratio));
+        System.out.println(yellow(String.format("%.1f%% Of Original", 100 * ratio)));
         System.out.print("Decompressed Size: \t" + decompressedSize + " byte\t- ");
         if (filesAreEqual(original, decompressed))
-            println("green", "MATCH");
+            System.out.println(green("MATCH"));
         else
-            println("red", "ERROR - Content Not Equal");
+            System.out.println(red("ERROR - Content Not Equal"));
         System.out.println("");
     }
 

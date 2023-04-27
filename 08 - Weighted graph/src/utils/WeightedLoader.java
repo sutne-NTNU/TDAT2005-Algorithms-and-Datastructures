@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class UnweightedLoader
+public class WeightedLoader
 {
     public static class FileContent
     {
@@ -21,21 +21,23 @@ public class UnweightedLoader
     {
         public int from;
         public int to;
-        Edge(int from, int to)
+        public int weight;
+        Edge(int from, int to, int weight)
         {
             this.from = from;
             this.to = to;
+            this.weight = weight;
         }
     }
 
-    private static final String DATA_PATH = "07 - Unweighted Graph/data/";
+    private static final String DATA_PATH = "08 - Weighted Graph/data/";
 
     // First line of file: "<numNodes> <numEdges>"
-    // Remaining lines:    "<fromIndex> <toIndex>"
+    // Remaining lines:    "<fromIndex> <toIndex> <capacity"
 
     public static FileContent load(String filename)
     {
-        String path = UnweightedLoader.DATA_PATH + filename;
+        String path = WeightedLoader.DATA_PATH + filename;
         try (BufferedReader reader = new BufferedReader(new FileReader(path)))
         {
             FileContent content = new FileContent();
@@ -51,10 +53,10 @@ public class UnweightedLoader
                 info = line.trim().split("\\s+");
                 int from = Integer.parseInt(info[0]);
                 int to = Integer.parseInt(info[1]);
-                edges.add(new Edge(from, to));
+                int capacity = Integer.parseInt(info[2]);
+                edges.add(new Edge(from, to, capacity));
             }
             content.edges = edges.toArray(new Edge[edges.size()]);
-
             return content;
         }
         catch (FileNotFoundException e)

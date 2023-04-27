@@ -1,58 +1,55 @@
 package src;
 
-public class Queue
+public class Queue<T>
 {
-    public QueueMember first;
+    public QueueMember<T> first;
 
-    public Queue()
+    public Queue() { }
+    public Queue(T first)
     {
+        this.first = new QueueMember<T>(first);
     }
 
-    public Queue(Object first)
+    public T getNext()
     {
-        this.first = new QueueMember(first);
-    }
-
-    public Object next()
-    {
-        Object next = first.obj;
-        this.first = first.next;
+        T next = this.first.obj;
+        this.first = this.first.next;
         return next;
     }
 
     public boolean isEmpty()
     {
-        return first == null;
+        return this.first == null;
     }
 
-    public void add(Object obj)
+    public void add(T obj)
     {
-        if (first == null)
+        if (this.first == null)
         {
-            first = new QueueMember(obj);
+            this.first = new QueueMember<T>(obj);
             return;
         }
-        first.behind(obj);
+        this.first.addNext(obj);
     }
 }
 
-class QueueMember
+class QueueMember<T>
 {
-    QueueMember next = null;
-    Object obj;
+    QueueMember<T> next = null;
+    T obj;
 
-    QueueMember(Object obj)
+    QueueMember(T obj)
     {
         this.obj = obj;
     }
 
-    void behind(Object obj)
+    void addNext(T obj)
     {
-        if (next == null)
+        if (this.next == null)
         {
-            next = new QueueMember(obj);
+            this.next = new QueueMember<T>(obj);
             return;
         }
-        next.behind(obj);
+        this.next.addNext(obj);
     }
 }
