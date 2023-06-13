@@ -19,7 +19,7 @@ Run the 'Main.java' file to try this program. The output should be the following
 
 ## Map
 
-When paths are found, in addition to printing the information to the console as shown above, a CSV file is created in the `data/routes` directory. To view the paths in Google Maps you can use the following link: [Google Maps](https://www.google.com/maps/d/u/0/) and upload the CSV file directly to see the coordinates of all the nodes along the path (Each map layer is limited to 2000 nodes).
+When paths are found, in addition to printing the information to the console as shown above, a CSV file is created in the `data/routes` directory. To view the paths in Google Maps you can use the following link: [Google Maps](https://www.google.com/maps/about/mymaps/) where you can create a new map and upload the CSV file directly to see the coordinates of all the nodes along the path (Each map layer is limited to 2000 nodes).
 
 The result should be something like this (result from the main program out shown above):
 
